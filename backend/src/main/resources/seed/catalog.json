@@ -1,0 +1,383 @@
+{
+  "courses": [
+    {
+      "name": "Java程序设计",
+      "description": "从语法、面向对象到集合框架，建立后续学习 Spring 的基础。本阶段用这一门课把章节、知识点、资料和题目做完整。",
+      "chapters": [
+        {
+          "title": "Java基础",
+          "points": [
+            {
+              "name": "数据类型",
+              "description": "Java 把数据分成基本类型和引用类型。基本类型直接存值，引用类型存的是对象的引用。",
+              "document": {
+                "title": "数据类型讲义",
+                "category": "讲义",
+                "fileName": "java-datatype.txt",
+                "content": "Java 数据类型\n\n基本类型有 byte、short、int、long、float、double、char、boolean。整数默认用 int，小数默认用 double，单精度小数才用 float，并且字面量要加 f。\n\nString 不是基本类型，它是引用类型。引用类型的变量保存的是对象在堆中的位置，所以两个 String 用 == 比较的是引用，比较内容应使用 equals。\n\n学习后面的运算符、流程控制和集合之前，先分清「值」和「引用」。"
+              },
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "Java 中用于表示单精度浮点数的基本类型是？",
+                  "options": ["A. double", "B. float", "C. int", "D. char"],
+                  "answer": "B",
+                  "analysis": "float 是单精度，double 是双精度。小数没有后缀时默认是 double。"
+                },
+                {
+                  "type": "SINGLE",
+                  "content": "下列哪个是引用类型？",
+                  "options": ["A. int", "B. boolean", "C. String", "D. char"],
+                  "answer": "C",
+                  "analysis": "String 是类，属于引用类型。int、boolean、char 都是基本类型。"
+                }
+              ]
+            },
+            {
+              "name": "运算符",
+              "description": "算术、关系、逻辑和赋值运算是表达式的基础。两个整数相除会丢掉小数部分。",
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "表达式 5 / 2 在两个操作数都是 int 时，结果是？",
+                  "options": ["A. 2.5", "B. 2", "C. 3", "D. 2.0"],
+                  "answer": "B",
+                  "analysis": "int 除以 int 仍然是 int，小数部分被直接舍弃，所以结果是 2。"
+                },
+                {
+                  "type": "SINGLE",
+                  "content": "比较两个 int 是否相等，应使用？",
+                  "options": ["A. =", "B. ==", "C. :=", "D. equals"],
+                  "answer": "B",
+                  "analysis": "= 是赋值。基本类型比较相等使用 ==。equals 用于对象内容比较。"
+                }
+              ]
+            },
+            {
+              "name": "流程控制",
+              "description": "用 if、switch 做分支，用 for、while 做循环。switch 不能直接判断 double。",
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "哪一种语句会在条件成立时重复执行一段代码？",
+                  "options": ["A. if", "B. switch", "C. while", "D. break"],
+                  "answer": "C",
+                  "analysis": "while 是循环。if 和 switch 是分支，break 用来跳出。"
+                },
+                {
+                  "type": "SINGLE",
+                  "content": "传统 switch 不能直接使用的类型是？",
+                  "options": ["A. int", "B. String", "C. double", "D. 枚举"],
+                  "answer": "C",
+                  "analysis": "switch 支持整数、枚举、字符串等，不支持 double、float、boolean。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "面向对象",
+          "points": [
+            {
+              "name": "封装",
+              "description": "把数据藏在对象内部，通过方法控制读写，避免外部随意改坏状态。",
+              "document": {
+                "title": "封装讲义",
+                "category": "讲义",
+                "fileName": "java-encapsulation.txt",
+                "content": "封装\n\n封装是把字段尽量设为 private，只公开有必要的方法。外部代码不能直接改字段，只能调用方法，方法里可以做校验。\n\n例如余额不应该被任意赋成负数，就不要把 balance 设成 public，而是提供 deposit 和 withdraw。\n\n封装是继承和多态的前提：先有稳定的对象边界，再谈扩展。"
+              },
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "封装的主要目的是？",
+                  "options": ["A. 让所有字段都能被任意类直接修改", "B. 隐藏内部数据，并通过方法控制访问", "C. 取消类中的方法", "D. 让一个类同时继承多个类"],
+                  "answer": "B",
+                  "analysis": "封装强调隐藏实现、公开必要接口。Java 不支持一个类继承多个类。"
+                },
+                {
+                  "type": "SINGLE",
+                  "content": "希望字段只在当前类内部访问，通常使用？",
+                  "options": ["A. public", "B. protected", "C. private", "D. import"],
+                  "answer": "C",
+                  "analysis": "private 成员只能在声明它的类内部访问。"
+                }
+              ]
+            },
+            {
+              "name": "继承",
+              "description": "子类复用父类的属性和方法，并可以重写方法。Java 的类只能有一个直接父类。",
+              "document": {
+                "title": "继承讲义",
+                "category": "讲义",
+                "fileName": "java-inheritance.txt",
+                "content": "继承\n\n子类使用 extends 继承一个父类，从而复用父类已经实现的能力。Java 是单继承，一个类不能同时 extends 两个类，但可以实现多个接口。\n\n子类方法签名与父类实例方法一致时，称为重写。重写后，用父类引用指向子类对象再调用该方法，会执行子类版本，这就是多态的基础。\n\n构造子类对象时，会先调用父类构造方法。"
+              },
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "Java 中类继承使用的关键字是？",
+                  "options": ["A. implements", "B. extends", "C. super", "D. import"],
+                  "answer": "B",
+                  "analysis": "类继承用 extends，实现接口用 implements。super 用来访问父类成员。"
+                },
+                {
+                  "type": "SINGLE",
+                  "content": "一个 Java 类可以直接继承几个类？",
+                  "options": ["A. 1 个", "B. 2 个", "C. 任意多个", "D. 不能继承"],
+                  "answer": "A",
+                  "analysis": "Java 类是单继承，只能有一个直接父类。"
+                }
+              ]
+            },
+            {
+              "name": "多态",
+              "description": "父类引用指向子类对象时，调用的是子类重写后的实例方法。静态方法不能体现这种运行时多态。",
+              "document": {
+                "title": "多态讲义",
+                "category": "讲义",
+                "fileName": "java-polymorphism.txt",
+                "content": "多态\n\n运行时多态的常见写法是：父类引用指向子类对象，然后调用被子类重写的实例方法。编译器按父类声明检查能否调用，运行时按对象的真实类型选择方法。\n\n要做到这一点，通常需要：存在继承或接口实现、子类重写了方法、用父类或接口引用持有子类对象。\n\n静态方法、成员变量和 private 方法都按声明类型绑定，不能体现这种运行时多态。\n\n学习多态之前，需要先掌握封装、继承和方法重写。"
+              },
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "运行时多态的典型表现是？",
+                  "options": ["A. 父类引用指向子类对象，并调用重写后的实例方法", "B. 子类不能重写任何方法", "C. 只能调用静态方法", "D. 字段必须全部是 public"],
+                  "answer": "A",
+                  "analysis": "父类引用指向子类对象，实例方法调用绑定到子类重写的实现。"
+                },
+                {
+                  "type": "SINGLE",
+                  "content": "下列哪一项不能体现运行时多态？",
+                  "options": ["A. 子类重写后的实例方法", "B. 通过接口引用调用实现类方法", "C. 父类的静态方法", "D. 父类引用调用子类重写方法"],
+                  "answer": "C",
+                  "analysis": "静态方法属于类而不是对象，不按运行时对象类型选择实现。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "集合框架",
+          "points": [
+            {
+              "name": "List",
+              "description": "List 有序、可重复。ArrayList 适合按下标读取，LinkedList 更适合在已知位置附近插入。",
+              "document": {
+                "title": "List 讲义",
+                "category": "讲义",
+                "fileName": "java-list.txt",
+                "content": "List\n\nList 是有序、允许重复元素的集合。ArrayList 基于数组，按下标访问很快；在中间插入或删除时，需要移动后面的元素。\n\nLinkedList 基于链表。如果已经拿到要操作的节点，插入和删除不需要搬移整段数组；但如果只给一个下标，它仍要从头遍历到那个位置。\n\n所以「查询快」主要说的是 ArrayList 的随机访问，不是所有 List 都一样快。"
+              },
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "ArrayList 按下标读取元素比较快，主要因为？",
+                  "options": ["A. 它每次都遍历整个链表", "B. 它基于数组，可以用下标直接定位", "C. 它不允许重复元素", "D. 它只能存放基本类型"],
+                  "answer": "B",
+                  "analysis": "ArrayList 内部是数组，随机访问是 O(1)。它允许重复，存放的是对象。"
+                },
+                {
+                  "type": "SINGLE",
+                  "content": "已经定位到节点后，希望频繁在该位置插入，更合适的是？",
+                  "options": ["A. ArrayList", "B. LinkedList", "C. HashMap", "D. HashSet"],
+                  "answer": "B",
+                  "analysis": "LinkedList 在已知节点处插入不必移动后续数组元素。HashMap 和 HashSet 不是 List。"
+                }
+              ]
+            },
+            {
+              "name": "Set",
+              "description": "Set 不保存重复元素。HashSet 基于哈希表，TreeSet 会按顺序遍历。",
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "HashSet 的特点是？",
+                  "options": ["A. 允许重复元素", "B. 元素不重复", "C. 一定按插入顺序从小到大排序", "D. 只能存放数字"],
+                  "answer": "B",
+                  "analysis": "Set 不允许重复。HashSet 不保证排序，需要排序应看 TreeSet。"
+                },
+                {
+                  "type": "SINGLE",
+                  "content": "希望元素不重复，并且按自然顺序遍历，应选择？",
+                  "options": ["A. HashSet", "B. TreeSet", "C. ArrayList", "D. LinkedList"],
+                  "answer": "B",
+                  "analysis": "TreeSet 基于红黑树，元素唯一且按比较规则有序。ArrayList 允许重复。"
+                }
+              ]
+            },
+            {
+              "name": "Map",
+              "description": "Map 用键找值。HashMap 允许一个 null 键，键重复时后写入的值会覆盖先写入的值。",
+              "document": {
+                "title": "Map 讲义",
+                "category": "讲义",
+                "fileName": "java-map.txt",
+                "content": "Map\n\nMap 保存键值对。HashMap 通过键的哈希值定位桶，平均情况下查找很快。同一个键再次 put，会覆盖原来的值，而不是并存两个相同键。\n\nHashMap 允许最多一个 null 键，也允许多个 null 值。Hashtable 则不允许 null 键和 null 值。\n\n用 get 取整数计数时要先判断 null，因为键不存在时返回 null，直接拆箱会空指针。"
+              },
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "HashMap 最多可以有几个 null 键？",
+                  "options": ["A. 不允许 null 键", "B. 1 个", "C. 任意多个", "D. 键必须是数字"],
+                  "answer": "B",
+                  "analysis": "HashMap 允许一个 null 键、多个 null 值。Hashtable 才不允许 null。"
+                },
+                {
+                  "type": "SINGLE",
+                  "content": "用 HashMap 统计单词出现次数时，哪一种做法是合理的？",
+                  "options": ["A. get 之后先判断是否为 null，再做加法", "B. 同一个键可以同时保存多个值", "C. size() 返回的是容量 capacity", "D. 键不能是字符串"],
+                  "answer": "A",
+                  "analysis": "键不存在时 get 返回 null。size 返回的是当前键值对数量，不是容量。"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "relations": [
+        {"source": "数据类型", "target": "运算符", "type": "PREREQUISITE"},
+        {"source": "数据类型", "target": "流程控制", "type": "PREREQUISITE"},
+        {"source": "数据类型", "target": "封装", "type": "PREREQUISITE"},
+        {"source": "封装", "target": "继承", "type": "PREREQUISITE"},
+        {"source": "继承", "target": "多态", "type": "PREREQUISITE"},
+        {"source": "数据类型", "target": "List", "type": "PREREQUISITE"},
+        {"source": "流程控制", "target": "List", "type": "PREREQUISITE"},
+        {"source": "List", "target": "Map", "type": "PREREQUISITE"},
+        {"source": "List", "target": "Set", "type": "RELATED"},
+        {"source": "运算符", "target": "流程控制", "type": "RELATED"},
+        {"source": "List", "target": "Set", "type": "RELATED"},
+        {"source": "List", "target": "Map", "type": "RELATED"}
+      ]
+    },
+    {
+      "name": "数据库原理",
+      "description": "理解关系模型、主键和 SQL 查询，为后面保存学习记录和业务数据打基础。",
+      "chapters": [
+        {
+          "title": "关系模型",
+          "points": [
+            {
+              "name": "关系与表",
+              "description": "关系就是一张表。行是元组，列是属性。",
+              "questions": [
+                {
+                  "type": "JUDGE",
+                  "content": "在关系模型中，一张表的一行对应一个元组。",
+                  "options": ["A. 正确", "B. 错误"],
+                  "answer": "A",
+                  "analysis": "关系的元组对应表中的一行，属性对应列。"
+                }
+              ]
+            },
+            {
+              "name": "主键",
+              "description": "主键用来唯一标识一行，不能重复，也不能为空。",
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "主键的作用是？",
+                  "options": ["A. 让一列可以出现重复空值", "B. 唯一标识表中的一行", "C. 代替所有外键", "D. 自动加密数据"],
+                  "answer": "B",
+                  "analysis": "主键值唯一且非空，用来区分不同的行。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "SQL语言",
+          "points": [
+            {
+              "name": "SELECT",
+              "description": "SELECT 用来查询数据，可以配合 WHERE 过滤、ORDER BY 排序。",
+              "questions": [
+                {
+                  "type": "SINGLE",
+                  "content": "要从表中读取数据，应使用？",
+                  "options": ["A. INSERT", "B. UPDATE", "C. SELECT", "D. DROP"],
+                  "answer": "C",
+                  "analysis": "SELECT 是查询语句。INSERT 新增，UPDATE 修改，DROP 删除对象。"
+                }
+              ]
+            },
+            {
+              "name": "JOIN",
+              "description": "JOIN 按关联条件把多张表的行拼在一起查询。",
+              "questions": []
+            }
+          ]
+        }
+      ],
+      "relations": [
+        {"source": "关系与表", "target": "主键", "type": "PREREQUISITE"},
+        {"source": "主键", "target": "JOIN", "type": "RELATED"}
+      ]
+    },
+    {
+      "name": "操作系统",
+      "description": "了解进程、内存和文件系统的基本概念。",
+      "chapters": [
+        {
+          "title": "进程与内存",
+          "points": [
+            {"name": "进程", "description": "进程是程序的一次执行过程，是资源分配的基本单位。", "questions": []},
+            {"name": "虚拟内存", "description": "虚拟内存让进程看到一块连续地址空间，实际由操作系统映射到物理内存或磁盘。", "questions": []}
+          ]
+        }
+      ],
+      "relations": [
+        {"source": "进程", "target": "虚拟内存", "type": "RELATED"}
+      ]
+    },
+    {
+      "name": "计算机网络",
+      "description": "从分层模型理解应用、传输和网络层各自负责什么。",
+      "chapters": [
+        {
+          "title": "网络分层",
+          "points": [
+            {"name": "TCP与UDP", "description": "TCP 面向连接、可靠传输；UDP 无连接，开销更小。", "questions": []},
+            {"name": "HTTP", "description": "HTTP 是应用层协议，浏览器和 Web 服务之间常用它交换请求与响应。", "questions": []}
+          ]
+        }
+      ],
+      "relations": [
+        {"source": "TCP与UDP", "target": "HTTP", "type": "PREREQUISITE"}
+      ]
+    },
+    {
+      "name": "数据结构",
+      "description": "掌握线性表、栈和队列这些最常用的组织方式。",
+      "chapters": [
+        {
+          "title": "线性结构",
+          "points": [
+            {"name": "栈", "description": "栈是后进先出的线性表，只在一端插入和删除。", "questions": []},
+            {"name": "队列", "description": "队列是先进先出的线性表，一端进入，另一端离开。", "questions": []}
+          ]
+        }
+      ],
+      "relations": [
+        {"source": "栈", "target": "队列", "type": "RELATED"}
+      ]
+    },
+    {
+      "name": "软件工程",
+      "description": "了解需求、设计和测试如何串成一个可交付的软件过程。",
+      "chapters": [
+        {
+          "title": "开发过程",
+          "points": [
+            {"name": "需求分析", "description": "需求分析要说清系统为谁解决什么问题，以及哪些功能先做。", "questions": []},
+            {"name": "软件测试", "description": "测试用来检查实现是否符合需求，包括功能是否可用、边界是否处理正确。", "questions": []}
+          ]
+        }
+      ],
+      "relations": [
+        {"source": "需求分析", "target": "软件测试", "type": "PREREQUISITE"}
+      ]
+    }
+  ]
+}
