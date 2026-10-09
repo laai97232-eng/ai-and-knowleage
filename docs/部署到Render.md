@@ -59,6 +59,7 @@
 | `AI_API_KEY` | 大模型密钥 |
 | `AI_CHAT_MODEL` | 默认 `deepseek-chat` |
 | `APP_UPLOAD_DIR` | 上传目录，免费实例没有持久磁盘，上传的文件重启会丢 |
+| `APP_ALLOWED_ORIGINS` | 需要放行别的网站跨域时才填，例如 `https://ai-and-knowleage.vercel.app`；默认已放行本机和 Vercel 那份前端 |
 
 > `PORT` 不用配，Render 会自动注入，`application.yml` 里已经写成 `${PORT:8080}`。
 
@@ -104,6 +105,28 @@ git push
 示例资料本身写在 `catalog.json` 里，每次启动都会重新生成，不受影响。
 
 **想改回前后端分开部署**
-把前端单独发到 GitHub Pages 时，构建前设置环境变量
+把前端单独发到别的静态托管时，构建前设置环境变量
 `VITE_API_BASE=https://study-assistant-xxxx.onrender.com`，
-并在 Render 加一项 `APP_ALLOWED_ORIGINS=https://laai97232-eng.github.io` 放行跨域。
+并在 Render 加一项 `APP_ALLOWED_ORIGINS=https://你的前端域名` 放行跨域。
+
+---
+
+## 五、关于 Vercel 上原有的那份前端
+
+仓库连着 Vercel（`https://ai-and-knowleage.vercel.app/`），推送后它会跟着重新构建。
+但它的接口请求是相对路径 `/api`，会打到 Vercel 自己的域名上，所以那份页面拿不到数据。
+以 Render 网址为准的话，不用管它，也不影响 Render 上的使用。
+
+如果想让 Vercel 那份也能用，在 `frontend/vercel.json` 加一段反向代理即可
+（把域名换成你 Render 的实际地址）：
+
+```json
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://study-assistant-xxxx.onrender.com/api/:path*" }
+  ]
+}
+```
+
+后端默认已经放行了 `https://ai-and-knowleage.vercel.app` 这个来源，
+所以配好这段代理之后，Vercel 上的页面也能直接登录使用。
