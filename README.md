@@ -15,8 +15,15 @@
 
 默认数据库账号写在 `backend/src/main/resources/application.yml`，可用环境变量覆盖：
 
+- `MYSQL_HOST`，默认 `127.0.0.1`
+- `MYSQL_PORT`，默认 `3306`
+- `MYSQL_DATABASE`，默认 `study_assistant`（不存在时自动创建）
 - `MYSQL_USERNAME`，默认 `root`
 - `MYSQL_PASSWORD`，默认 `123456`
+
+可选：
+- `PORT`，默认 `8080`（云平台会自动注入）
+- `JWT_SECRET`、`APP_UPLOAD_DIR`、`APP_ALLOWED_ORIGINS`
 
 可选的大模型（OpenAI 兼容接口，例如 DeepSeek）：
 
@@ -42,6 +49,21 @@ npm run dev
 https://ai-and-knowleage.vercel.app/
 
 浏览器打开 http://localhost:5173
+
+## 部署
+
+前端构建产物会被同步到 `backend/src/main/resources/static`，由 Spring Boot 一起托管，
+所以线上只需要一个网址，也没有跨域问题。
+
+```powershell
+# 构建前端 + 同步到后端静态资源
+powershell -ExecutionPolicy Bypass -File scripts\build-web.ps1
+
+# 构建 + 提交推送（推送后由云平台自动部署）
+powershell -ExecutionPolicy Bypass -File scripts\deploy.ps1 -Message "更新说明"
+```
+
+具体部署步骤（Render + TiDB Cloud Serverless 免费方案）见 [docs/部署到Render.md](docs/部署到Render.md)。
 
 ## 演示账号
 

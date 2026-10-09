@@ -1,7 +1,12 @@
 import axios, { type AxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 
-const instance = axios.create({ baseURL: '/api', timeout: 20000 })
+// 默认与页面同源，适合后端托管前端静态页的部署方式。
+// 需要前后端分离（例如前端放 GitHub Pages）时，用 VITE_API_BASE 指定后端绝对地址，
+// 例如 VITE_API_BASE=https://study-assistant.onrender.com
+const API_BASE = (import.meta.env.VITE_API_BASE || '').replace(/\/+$/, '')
+
+const instance = axios.create({ baseURL: `${API_BASE}/api`, timeout: 20000 })
 
 instance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
@@ -36,7 +41,7 @@ export default http
 
 export async function downloadDocument(id: number, filename: string) {
   const token = localStorage.getItem('token')
-  const response = await axios.get(`/api/documents/${id}/file`, {
+  const response = await axios.get(`${API_BASE}/api/documents/${id}/file`, {
     responseType: 'blob',
     headers: token ? { Authorization: `Bearer ${token}` } : {}
   })

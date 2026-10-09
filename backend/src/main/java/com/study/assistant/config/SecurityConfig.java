@@ -32,6 +32,14 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // 静态资源与前端页面：放开，页面本身不含数据，数据接口仍然要鉴权
+                        .requestMatchers("/", "/index.html", "/favicon.ico", "/assets/**", "/*.js", "/*.css", "/*.png", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/*.map").permitAll()
+                        // /error 承载前端路由回退（见 SpaController），未登录时也必须能进
+                        .requestMatchers("/error").permitAll()
+                        // 前端 history 路由回退（/login、/admin/courses 等深链刷新），页面本身不含数据
+                        .requestMatchers("/login", "/register", "/courses/**", "/knowledge/**", "/practice/**",
+                                "/plans/**", "/records", "/wrong", "/profile", "/chat", "/graph", "/insights",
+                                "/admin", "/admin/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
@@ -48,11 +56,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource(AppProperties props) {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://127.0.0.1:5173"));
+        config.setAllowedOriginPatterns(props.getAllowedOrigins());
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Content-Disposition"));
         config.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

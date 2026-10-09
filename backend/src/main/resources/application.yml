@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
   servlet:
     encoding:
       charset: UTF-8
@@ -12,10 +12,17 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/study_assistant?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    # createDatabaseIfNotExist 让第一次连接时自动建库（TiDB Cloud Serverless 这类托管库很有用）
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:study_assistant}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false&rewriteBatchedStatements=true&createDatabaseIfNotExist=true
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:123456}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      # 托管库（尤其 Serverless 型）冷启动可能要十几秒，给足等待时间
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:60000}
+      initialization-fail-timeout: ${DB_INIT_FAIL_TIMEOUT:90000}
+      maximum-pool-size: ${DB_POOL_SIZE:5}
+      minimum-idle: 1
   servlet:
     multipart:
       max-file-size: 20MB
@@ -29,6 +36,7 @@ spring:
       mode: always
       encoding: UTF-8
       schema-locations: classpath:schema.sql
+      continue-on-error: false
 
 mybatis-plus:
   configuration:
@@ -38,9 +46,13 @@ mybatis-plus:
       id-type: auto
 
 app:
-  upload-dir: uploads
-  jwt-secret: study-assistant-phase1-jwt-secret-key-32b
-  jwt-expire-hours: 72
+  # 上传/生成的文件目录；云平台建议挂载持久磁盘后指向该磁盘，例如 /data/uploads
+  upload-dir: ${APP_UPLOAD_DIR:uploads}
+  jwt-secret: ${JWT_SECRET:study-assistant-phase1-jwt-secret-key-32b}
+  jwt-expire-hours: ${JWT_EXPIRE_HOURS:72}
+  # 前后端同源部署时用不到；若前端单独放在 GitHub Pages，把页面地址填进来
+  # 多个地址用英文逗号分隔，例如 APP_ALLOWED_ORIGINS=https://xxx.github.io
+  allowed-origins: ${APP_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
   ai:
     base-url: ${AI_BASE_URL:}
     api-key: ${AI_API_KEY:}
