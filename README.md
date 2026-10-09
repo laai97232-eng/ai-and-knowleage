@@ -39,6 +39,8 @@ npm install
 npm run dev
 ```
 
+https://ai-and-knowleage.vercel.app/
+
 浏览器打开 http://localhost:5173
 
 ## 演示账号
